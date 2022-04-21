@@ -27,7 +27,4 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Linting Python
-        uses: jose-lpa/python-black-check-action@master
-        with:
-          path: "."
-          line-length: 80
+        uses: jpetrucciani/black-check@master
