@@ -1,0 +1,15 @@
+name: My first action
+
+on: [push]
+jobs:
+  Example-Job:
+    # The action should run on Ubuntu 20.04
+    runs-on: ubuntu-latest
+
+    # Indicate what should happen.
+    steps:
+      - run: echo "🎉 Running the `Example-Job` job automatically following a ${{ github.event_name }} event."
+      - name: List files in the repository
+        run: ls ${{ github.workspace }}
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
