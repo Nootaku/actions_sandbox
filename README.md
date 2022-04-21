@@ -254,17 +254,6 @@ jobs:
         with:
           node-version: "16"
       - run: cd simple-sap
-      - run: npm install
-      - run: npm test
-
-  Build-App:
-    runs-on: ubuntu-latest
-    needs: VueJS-environment
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-      - run: cd simple-sap
-      - run: npm install && npm run build
+      - run: cd simple-sap && npm install
+      - run: cd simple-sap && npm run build
 ```
