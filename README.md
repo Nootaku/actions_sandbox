@@ -184,6 +184,8 @@ def test_function_1(a, b, expected):
         assert logic.function_1(a, b) == expected
 ```
 
+also create a `setup.py` file at the root of the project to follow the [pytest good practices](https://docs.pytest.org/en/6.2.x/goodpractices.html)
+
 ### Step 2 - Add a Unit Test Job
 
 ```yaml
@@ -209,3 +211,61 @@ Unit-Tests:
 ```
 
 Note the `needs` keyword. This can be a string or a list. And allows to only run a job if the given _needed_ job succeeds.
+
+This job has also taught me the importance of the checkout action (`actions/checkout@v3`) that allows the job to get access to the pushed code. In my case my pipeline failed multiple times not finding the `setup.py` file I had created.
+
+#### Here is the result
+
+![passing unit test](assets/unittest_pass.png)
+
+Note how the summary visuals have changed. There is now a clear link between the Linger and the Unit tests.
+
+## Simple VueJS Single Page Application
+
+Let's create a new VueJS project:
+
+```bash
+vue create simple-sap
+```
+
+In the options choose the default Vue3 options. This should create a default project that already works (we can connect to the page).
+
+### Create the Action
+
+Let's create a new action for this. I call it `vue_js.yml`
+
+What I want to do is to create a new dependency between actions. I want my `vue_js.yml` action to run ONLY if the `first_action.yml` has been successful. According to the [documentation](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows) we can create an event that will trigger an action. This event can be the completion of another action.
+
+```yaml
+name: Build VueJS app
+
+on:
+  workflow_run:
+    workflows: ["My first action"]
+    types:
+      - completed
+
+jobs:
+  VueJs-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - run: cd simple-sap
+      - run: npm install
+      - run: npm test
+
+  Build-App:
+    runs-on: ubuntu-latest
+    needs: VueJS-environment
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - run: cd simple-sap
+      - run: npm install
+      - run: npm run build
+```
