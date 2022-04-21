@@ -266,6 +266,5 @@ jobs:
         with:
           node-version: "16"
       - run: cd simple-sap
-      - run: npm install
-      - run: npm run build
+      - run: npm install && npm run build
 ```
