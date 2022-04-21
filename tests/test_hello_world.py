@@ -1,5 +1,5 @@
 import pytest
-import hello_world as logic
+import app_python.hello_world as logic
 
 
 @pytest.mark.parametrize(

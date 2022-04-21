@@ -200,7 +200,9 @@ Unit-Tests:
       run: python -m pip install --upgrade pip
 
     - name: Install dependencies
-      run: pip install pytest
+      run: |
+        pip install pytest
+        pip install -e .
 
     - name: Run Unit Tests
       run: pytest
