@@ -106,11 +106,10 @@ Linter-Python:
   steps:
     - name: Check out repository code
       uses: actions/checkout@v3
-    - name: Linting Python
-      uses: jose-lpa/python-black-check-action@master
+    - name: Running Black Linter
+      uses: jpetrucciani/black-check@master
       with:
-        path: "."
-        line-length: 80
+        black_flags: "--diff"
 ```
 
 Notice the `uses` keyword that allows to use existing actions.
@@ -134,3 +133,15 @@ Linter-Python:
   - name: Install and upgrade PIP
     run: python -m pip install --upgrade pip
 ```
+
+### Step 3 - Commit and check
+
+When we run this version, we can see the following:
+
+![linter error](assets/linter_fail.png)
+
+We can now refer to the [black documentation](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html)
+
+We can see that we have a linter error and where this error is located.
+
+Let's correct it and run the action again.
