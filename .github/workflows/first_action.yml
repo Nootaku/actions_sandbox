@@ -13,3 +13,12 @@ jobs:
         run: ls ${{ github.workspace }}
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
+
+  Linter-Python:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Linting Python
+        uses: jose-lpa/python-black-check-action@master
+        with:
+          path: "."
+          line-length: 80

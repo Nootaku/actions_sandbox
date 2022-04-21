@@ -23,9 +23,6 @@ First of, you can find all the documentation [here](https://docs.github.com/en/a
 Github Actions use the `yaml` syntax to run. The actions files should be created in `.github/workflows` directory. So, our first step is to make that directory.
 
 ```bash
-# Python file we will use
-touch hello_world.py
-
 # Actions directory
 mkdir .github
 cd .github
@@ -34,9 +31,53 @@ cd workflows
 touch first_action.yml
 ```
 
-#### Step 2 - Writing the python
+#### Step 2 - Writing the GitHub Action
+
+```yaml
+name: My first action
+
+on: [push]
+jobs:
+  Example-Job:
+    # The action should run on Ubuntu 20.04
+    runs-on: ubuntu-latest
+
+    # Indicate what should happen.
+    steps:
+      - run: echo "🎉 Running the `Example-Job` job automatically following a ${{ github.event_name }} event."
+      - name: List files in the repository
+        run: ls ${{ github.workspace }}
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+```
+
+> Each Action file has
+>
+> A `name`<br/>
+> A `on` event statement that defines when the action should be triggered <br/> `jobs` that indicate what should happen
+>
+> Each job has the `run-on` statement that indicates which runner (os) should be used and a collection of `steps` that represent the workflow of a job.
+>
+> Each step either directly uses a command using the `run` keyword or first give it a `name`.
+
+##### Commit as is and see the result
+
+Once committed we can go to our Repo and click on **_Actions_** then click on the `Example-Job` from the list. We should see this:
+
+![successful action](assets/first_success.png)
+
+Cool !
+
+## Lint a simple python file
+
+### Step 1 - Write the python
 
 Now, let's write our python code in a new document located at `./hello_world.py`
+
+```bash
+# Python file we will use
+touch hello_world.py
+```
 
 ```python
 def function_1(a, b):
@@ -53,17 +94,8 @@ In this example I made 2 linter mistakes:
 1. There should be 2 lines between `function_1` and `function_2`
 2. I used tabs for the spacing of `function_1` and spaces for `function_2`
 
-#### Step 3 - Writing the GitHub Action
+### Step 2 - Modifying our Action
 
-```yaml
-name: My first action
+If we go to the [GitHub Actions Marketplace](https://github.com/marketplace?type=actions) we can find already existing actions created by official entities (Docker, Python, NodeJs, ...) or other users.
 
-on: [push]
-jobs:
-```
-
-> Each Action file has<br>
-> A `name`<br>
-> A `on` event statement that defines when the action should be triggered<br> > `jobs` that indicate what should happen
->
-> Each job has the `run-on` statement that indicates which runner (os) should be used and a collection of `steps` that represent the workflow of a job.
+In this case we want to linter our python code. I chose to go for Black.
