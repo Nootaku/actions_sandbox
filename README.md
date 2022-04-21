@@ -198,12 +198,12 @@ Unit-Tests:
         python-version: "3.10"
     - name: Install and upgrade PIP
       run: python -m pip install --upgrade pip
-
+    - name: Check out repository code
+      uses: actions/checkout@v3
     - name: Install dependencies
       run: |
         pip install pytest
         pip install -e .
-
     - name: Run Unit Tests
       run: pytest
 ```
