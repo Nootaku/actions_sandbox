@@ -15,8 +15,8 @@ jobs:
         with:
           node-version: "16"
       - run: cd simple-sap
-      - run: npm install
-      - run: npm test
+      - run: cd simple-sap && npm install
+      - run: cd simple-sap && npm test
 
   Build-App:
     runs-on: ubuntu-latest
