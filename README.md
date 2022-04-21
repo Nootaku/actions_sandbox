@@ -99,3 +99,18 @@ In this example I made 2 linter mistakes:
 If we go to the [GitHub Actions Marketplace](https://github.com/marketplace?type=actions) we can find already existing actions created by official entities (Docker, Python, NodeJs, ...) or other users.
 
 In this case we want to linter our python code. I chose to go for Black.
+
+```yaml
+Linter-Python:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Check out repository code
+      uses: actions/checkout@v3
+    - name: Linting Python
+      uses: jose-lpa/python-black-check-action@master
+      with:
+        path: "."
+        line-length: 80
+```
+
+Notice the `uses` keyword that allows to use existing actions.

@@ -17,6 +17,8 @@ jobs:
   Linter-Python:
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
       - name: Linting Python
         uses: jose-lpa/python-black-check-action@master
         with:
