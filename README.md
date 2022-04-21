@@ -183,3 +183,27 @@ def test_function_1(a, b, expected):
     else:
         assert logic.function_1(a, b) == expected
 ```
+
+### Step 2 - Add a Unit Test Job
+
+```yaml
+Unit-Tests:
+  runs-on: ubuntu-latest
+  needs: Linter-Python
+
+  steps:
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+    - name: Install and upgrade PIP
+      run: python -m pip install --upgrade pip
+
+    - name: Install dependencies
+      run: pip install pytest
+
+    - name: Run Unit Tests
+      run: pytest
+```
+
+Note the `needs` keyword. This can be a string or a list. And allows to only run a job if the given _needed_ job succeeds.
