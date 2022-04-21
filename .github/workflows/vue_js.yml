@@ -26,5 +26,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - run: cd simple-sap
-      - run: npm install && npm run build
+      - run: cd simple-sap && npm install
+      - run: cd simple-sap && npm run build
