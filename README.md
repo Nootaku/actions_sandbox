@@ -145,3 +145,41 @@ We can now refer to the [black documentation](https://black.readthedocs.io/en/st
 We can see that we have a linter error and where this error is located.
 
 Let's correct it and run the action again.
+
+![linter error](assets/linter_pass.png)
+
+And indeed, it passes.
+
+## Passing Unit Tests
+
+We managed to create a Linter tester. Great !
+
+Now we want to create a few `pytest` unit-tests and ensure that all tests are passing. For this Job we will not use any existing Action but will make our own. Moreover, we are going to ensure that the Job will only run **if the Linter Job is successful**.
+
+### Step 1 - Writing the tests
+
+Pytests are stored in a directory called `tests`. So let's do that:
+
+```bash
+mkdir tests
+cd tests
+touch test_hello_world.py
+```
+
+```python
+import pytest
+
+
+@pytest.mark.parametrize('a, b, expected', [
+  (1, 2, 3),
+  (5, 5, 10),
+  (3, 'foo', TypeError())
+])
+def test_function_1(a, b, expected):
+  if isinstance(expected, Exception):
+    with pytest.raises(type(expected)):
+      logic.function_1(a, b)
+
+  else:
+    assert logic.function_1(a, b) == expected
+```
