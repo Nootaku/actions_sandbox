@@ -114,3 +114,23 @@ Linter-Python:
 ```
 
 Notice the `uses` keyword that allows to use existing actions.
+
+#### Note
+
+At first I thought that the code as is would work. However, I quickly noticed that it wouldn't.
+
+Our server has no idea what version of python it should use or how to install dependencies if required.
+
+So let's make that happen first:
+
+```yaml
+Linter-Python:
+  runs-on: ubuntu-latest
+  - name: Set up Python 3.10
+    uses: actions/setup-python@v2
+    with:
+      python-version: "3.10"
+
+  - name: Install and upgrade PIP
+    run: python -m pip install --upgrade pip
+```
