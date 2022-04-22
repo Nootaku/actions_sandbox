@@ -359,17 +359,40 @@ And create a new secret. This should contain the value of a Personal Access Toke
 
 #### Adding login an imaging to _yaml_
 
+In the documentation, we can find a snippet: [here](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-docker-hub)
+
 ```yaml
 - name: Login to DockerHub
   uses: docker/login-action@v1
   with:
-    registry: ghcr.io
+    registry: ${{ env.REGISTRY }}
     username: ${{ github.actor }}
     password: ${{ secrets.GHCR_TOKEN }}
+- name: Extract metadata (tags, labels) for Docker
+  id: meta
+  uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+  with:
+    images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 - name: Build and push
   uses: docker/build-push-action@v2
   with:
-    context: "{{defaultContext}}:simple-sap"
+    context: ${{ env.PWD }}
     push: true
-    tags: user/app:latest
+    tags: ${{ steps.meta.outputs.tags }}
+    labels: ${{ steps.meta.outputs.labels }}
 ```
+
+> Note the `Extract metadata` step.<br>
+> I've added this because, without it I had an error<br> > <img alt="Passing Vue Build" src="assets/image_error.png" style="zoom:100%;" />
+>
+> The passing of the metadata ensures that we are pushing the image to the right registry. Without it it will not use the right registry and will create the error above.
+
+## Conclusion
+
+In this little sandbox experiment, we've seen the basics of a workflow.
+
+We can make it more complex by adding Artifacts, Outputs, to share among workflows or jobs (we have used it in the `Build and push` job without really defining them).
+
+We can also use a `strategy` and `matrix` to test, build and deploy on different environments. (see [here](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs-or-python))
+
+However, I believe this experiment has given us the basics to avoid the pitfalls of beginners using the Github Actions.
