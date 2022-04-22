@@ -31,5 +31,4 @@ jobs:
     needs: VueJs-application
 
     steps:
-      - run: ll
-        working-directory: simple-sap
+      - run: ll ${{ github.workspace }}/simple-sap
