@@ -253,7 +253,52 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - run: cd simple-sap
       - run: cd simple-sap && npm install
       - run: cd simple-sap && npm run build
+```
+
+The result is a nice passing pipeline.
+
+![VueJS passing build](assets/vue_build_pass.png)
+
+#### Notes:
+
+I've noticed 2 things during this process:
+
+1. Each step of the pipeline resets the working directory (for the `run` commands) to the root of the repo. This is why we had to write `run: cd simple-sap && npm install` and `run: cd simple-sap && npm run build` as one-liners. We could have also used the following multiline syntax:
+
+```yaml
+- run: |
+    cd simple-sap
+    npm install
+    npm run build
+```
+
+2. After looking at [the documentation](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun) it appears we can define the working directory for each command using the `working-directory` instruction. So let's try it out and change the our `Build VueJS app` _yaml_ file.
+
+```yaml
+name: Build VueJS app
+
+on:
+  workflow_run:
+    workflows: ["My first action"]
+    types:
+      - completed
+
+jobs:
+  VueJs-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      # Also added names to the steps for clarity
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./simple-sap
+      - name: Build App
+        run: npm run build
+        working-directory: ./simple-sap
 ```
