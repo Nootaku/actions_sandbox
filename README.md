@@ -257,9 +257,7 @@ jobs:
       - run: cd simple-sap && npm run build
 ```
 
-The result is a nice passing pipeline.
-
-![VueJS passing build](assets/vue_build_pass.png)
+The result is a nice passing pipeline. --> <img alt="Passing Vue Build" src="assets/vue_build_pass.png" style="zoom:45%;" />
 
 #### Notes:
 
@@ -301,4 +299,43 @@ jobs:
       - name: Build App
         run: npm run build
         working-directory: ./simple-sap
+```
+
+> Seems like it is working:
+>
+> <img alt="Passing Vue Build" src="assets/vue_build_pass_2.png" style="zoom:45%;" />
+
+## Create a Docker image from the VueJS single page Application
+
+Again [the documentation](https://docs.github.com/en/actions/publishing-packages/about-packaging-with-github-actions) is pretty extensive about this part.
+
+The problem that I have been facing is the "non-existence" of the `./dist` directory in the repo and outside of the pipeline.
+
+But first things first ... the `Dockerfile`:
+
+### Step 1 - The Dockerfile
+
+```Dockerfile
+# Base image
+FROM nginx:stable-alpine
+
+# Create new group and user (with UID = 1000)
+ARG USERNAME=www-data
+ARG UID=1000
+
+# set -eux; will stop the script if any error occurs
+RUN set eux; \
+    adduser -S -D -u ${UID} -G ${USERNAME} ${USERNAME}; \
+    chown -hR ${USERNAME}:${USERNAME} /usr/share/nginx; \
+    chown -hR ${USERNAME}:${USERNAME} /var/cache/nginx; \
+    touch /var/run/nginx.pid; \
+    chown -hR ${USERNAME}:${USERNAME} /var/run/nginx.pid
+
+# Set working directory to nginx resources directory and remove default resources
+WORKDIR /usr/share/nginx/html
+
+# Copy the builded app to the image
+COPY ./dist .
+
+USER www-data
 ```

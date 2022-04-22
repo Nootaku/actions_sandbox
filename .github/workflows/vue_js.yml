@@ -6,8 +6,11 @@ on:
     types:
       - completed
 
+env:
+  PWD: ./simple-sap
+
 jobs:
-  VueJs-environment:
+  VueJs-application:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,8 +20,15 @@ jobs:
 
       # Also added names to the steps for clarity
       - name: Install dependencies
-        run: npm install
-        working-directory: ./simple-sap
+        run: npm ci
+        working-directory: ${{ env.PWD }}
       - name: Build App
         run: npm run build
-        working-directory: ./simple-sap
+        working-directory: ${{ env.PWD }}
+
+  Create-Docker-Image:
+    runs-on: ubuntu-latest
+    needs: VueJs-application
+
+    steps:
+      -run: ls ${{ github.workspace }}
