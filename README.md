@@ -356,3 +356,20 @@ Go to your repo, then to _Settings/Secrets/Actions_.
 <img alt="Passing Vue Build" src="assets/create_secret.png" style="zoom:60%;" />
 
 And create a new secret. This should contain the value of a Personal Access Token with Repo and Packages rights.
+
+#### Adding login an imaging to _yaml_
+
+```yaml
+- name: Login to DockerHub
+  uses: docker/login-action@v1
+  with:
+    registry: ghcr.io
+    username: ${{ github.actor }}
+    password: ${{ secrets.GHCR_TOKEN }}
+- name: Build and push
+  uses: docker/build-push-action@v2
+  with:
+    context: "{{defaultContext}}:simple-sap"
+    push: true
+    tags: user/app:latest
+```
