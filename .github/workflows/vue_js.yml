@@ -10,7 +10,7 @@ env:
   PWD: ./simple-sap
 
 jobs:
-  VueJs-application:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -26,10 +26,15 @@ jobs:
         run: npm run build
         working-directory: ${{ env.PWD }}
 
-  Create-Docker-Image:
-    runs-on: ubuntu-latest
-    needs: VueJs-application
-
-    steps:
-      - run: ls
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
         working-directory: ${{ env.PWD }}
+        with:
+          push: true
+          tags: user/app:latest

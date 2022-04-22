@@ -341,3 +341,18 @@ USER www-data
 ```
 
 ### Step 2 - Figuring out what is available
+
+As each `job` is being run on a new server, this means that once the build has run, you shouldn't create a new job to build the docker image but rather just build the image within the job.
+
+To build the image and push it to ghcr.io, we will use the [`docker/build-push-action@v2`](https://github.com/marketplace/actions/build-and-push-docker-images) action.
+
+This one requires to login with the [`docker/login-action@v1`](https://github.com/docker/login-action#github-container-registry) action.
+
+And for this to work we need to create secrets.
+
+##### Creating a Secret
+
+Go to your repo, then to _Settings/Secrets/Actions_.
+<img alt="Passing Vue Build" src="assets/create_secret.png" style="zoom:60%;" />
+
+And create a new secret. This should contain the value of a Personal Access Token with Repo and Packages rights.
