@@ -339,3 +339,5 @@ COPY ./dist .
 
 USER www-data
 ```
+
+### Step 2 - Figuring out what is available

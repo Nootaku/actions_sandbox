@@ -31,4 +31,5 @@ jobs:
     needs: VueJs-application
 
     steps:
-      - run: ls ${{ github.workspace }}
+      - run: ll
+        working-directory: ${{ env.PWD }}
