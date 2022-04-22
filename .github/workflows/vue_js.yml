@@ -31,4 +31,4 @@ jobs:
     needs: VueJs-application
 
     steps:
-      -run: ls ${{ github.workspace }}
+      - run: ls ${{ github.workspace }}
