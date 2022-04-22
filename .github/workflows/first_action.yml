@@ -9,6 +9,8 @@ jobs:
     # Indicate what should happen.
     steps:
       - run: echo "🎉 Running the `Example-Job` job automatically following a ${{ github.event_name }} event."
+      - name: Check out repository code
+        uses: actions/checkout@v3
       - name: List files in the repository
         run: ls ${{ github.workspace }}
 
