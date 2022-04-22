@@ -10,7 +10,7 @@ jobs:
     steps:
       - run: echo "🎉 Running the `Example-Job` job automatically following a ${{ github.event_name }} event."
       - name: List files in the repository
-        run: ll ${{ github.workspace }}
+        run: ls ${{ github.workspace }}
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 

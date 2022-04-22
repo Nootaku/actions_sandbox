@@ -32,4 +32,4 @@ jobs:
 
     steps:
       - run: ll
-        working-directory: ${{ env.PWD }}
+        working-directory: simple-sap
